@@ -1,127 +1,95 @@
-import { useState } from 'react';
-import { Logo } from './Logo';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { mockUsers } from '@/lib/mockData';
-import { User } from '@/lib/types';
+"use client";
 
-interface LoginScreenProps {
+import { User, UserRole } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { UserIcon, ClipboardIcon, TargetIcon, BoxIcon } from "lucide-react";
+
+type LoginScreenProps = {
   onLogin: (user: User) => void;
-}
+};
 
 export function LoginScreen({ onLogin }: LoginScreenProps) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-
-    const user = mockUsers.find(u => u.email === email);
-    
-    if (user) {
-      onLogin(user);
-    } else {
-      setError('Credenciais inválidas');
-    }
-  };
-
-  const quickLogin = (user: User) => {
-    onLogin(user);
+  const handleQuickLogin = (role: UserRole) => {
+    const mockUser: User = {
+      id: `demo-${role}-${Date.now()}`, // ID único para cada login
+      name: role,
+      email: `${role}@ultraacademia.com`,
+      role,
+      unidade: "A",
+    };
+    onLogin(mockUser);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1a1a1a] via-[#2a2a2a] to-[#0a0a0a] flex items-center justify-center p-4">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiIgc3Ryb2tlPSIjZmY2YjAwIiBzdHJva2Utb3BhY2l0eT0iLjA1IiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9zdmc+')] opacity-30"></div>
-
-      <div className="w-full max-w-md relative z-10">
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
+      <div className="w-full max-w-sm">
         {/* Logo */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-white p-6 rounded-2xl shadow-2xl">
-            <Logo size="lg" />
+        <div className="flex justify-center mb-6">
+          <div className="bg-orange-500 p-3 rounded-lg">
+            <svg width="32" height="32" fill="white">
+              <path d="M6 2 L26 16 L6 30 Z" />
+            </svg>
           </div>
         </div>
 
-        {/* Login Card */}
-        <Card className="shadow-2xl border-[#2a2a2a]">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Sistema de Compras</CardTitle>
-            <CardDescription className="text-center">
-              Faça login para acessar o mini ERP
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">E-mail</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="seu.email@ultraacademia.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="bg-white"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Senha</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="bg-white"
-                />
-              </div>
-              {error && (
-                <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md border border-red-200">
-                  {error}
-                </div>
-              )}
-              <Button 
-                type="submit" 
-                className="w-full bg-gradient-to-r from-[#ff6b00] to-[#ffa500] hover:from-[#e66000] hover:to-[#ff9500]"
-              >
-                Entrar
-              </Button>
-            </form>
+        {/* Caixa de login */}
+        <div className="bg-white rounded-xl shadow-lg p-6">
+          <h2 className="text-center text-xl font-semibold mb-2">Sistema de Compras</h2>
+          <p className="text-center text-sm text-gray-500 mb-4">Faça login para acessar o mini ERP</p>
 
-            {/* Quick Access para demonstração */}
-            <div className="mt-6 pt-6 border-t">
-              <p className="text-xs text-muted-foreground text-center mb-3">
-                Acesso rápido para demonstração:
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                {mockUsers.slice(0, 4).map((user) => (
-                  <Button
-                    key={user.id}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => quickLogin(user)}
-                    className="text-xs"
-                  >
-                    {user.role === 'operador' ? '👤' : 
-                     user.role === 'gerente' ? '👔' :
-                     user.role === 'diretor' ? '🎯' : '📦'} {user.role}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          <label className="block text-sm font-medium mb-1">E-mail</label>
+          <input
+            type="email"
+            placeholder="seu.email@ultraacademia.com"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
 
-        {/* Footer */}
-        <div className="text-center mt-8">
-          <p className="text-sm text-gray-400">
-            ULTRA ACADEMIA © 2026 - Todos os direitos reservados
-          </p>
+          <label className="block text-sm font-medium mb-1">Senha</label>
+          <input
+            type="password"
+            placeholder="********"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 mb-6 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+
+          <button
+            onClick={() => handleQuickLogin("operador")}
+            className="w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-semibold py-2 rounded-md mb-4 hover:opacity-90 transition"
+          >
+            Entrar
+          </button>
+
+          <div className="text-center text-gray-500 text-xs mb-2">Acesso rápido para demonstração:</div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => handleQuickLogin("operador")}
+              className="border border-gray-300 rounded-md py-2 flex items-center justify-center gap-1 hover:bg-gray-100 transition"
+            >
+              <UserIcon className="w-4 h-4 text-purple-700" /> operador
+            </button>
+            <button
+              onClick={() => handleQuickLogin("gerente")}
+              className="border border-gray-300 rounded-md py-2 flex items-center justify-center gap-1 hover:bg-gray-100 transition"
+            >
+              <ClipboardIcon className="w-4 h-4 text-blue-700" /> gerente
+            </button>
+            <button
+              onClick={() => handleQuickLogin("diretor")}
+              className="border border-gray-300 rounded-md py-2 flex items-center justify-center gap-1 hover:bg-gray-100 transition"
+            >
+              <TargetIcon className="w-4 h-4 text-pink-500" /> diretor
+            </button>
+            <button
+              onClick={() => handleQuickLogin("compras")}
+              className="border border-gray-300 rounded-md py-2 flex items-center justify-center gap-1 hover:bg-gray-100 transition"
+            >
+              <BoxIcon className="w-4 h-4 text-yellow-700" /> compras
+            </button>
+          </div>
+        </div>
+
+        <div className="text-center text-gray-400 text-xs mt-4">
+          ULTRA ACADEMIA © 2026 - Todos os direitos reservados
         </div>
       </div>
     </div>
