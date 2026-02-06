@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import React from "react";
+
 import { User } from '@/lib/types';
 import { LoginScreen } from './components/LoginScreen';
 import { MainLayout, Screen } from './components/MainLayout';
@@ -13,6 +15,9 @@ import { PurchasesDepartment } from './components/screens/PurchasesDepartment';
 import { FinanceDepartment } from './components/screens/FinanceDepartment';
 import { Toaster } from './components/ui/sonner';
 import { mockOrders } from '@/lib/mockData';
+
+// Import do gráfico
+import MyChart from '@/components/MyChart'; // ajuste o caminho real do arquivo
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -57,7 +62,15 @@ export default function App() {
 
     switch (currentScreen) {
       case 'dashboard':
-        return <Dashboard user={currentUser} />;
+        return (
+          <div>
+            <Dashboard user={currentUser} />
+            {/* Gráfico integrado abaixo do Dashboard */}
+            <div className="mt-4">
+              <MyChart />
+            </div>
+          </div>
+        );
       case 'listagem':
         return <OrderList user={currentUser} />;
       case 'criar-pedido':
@@ -75,7 +88,14 @@ export default function App() {
       case 'financeiro':
         return <FinanceDepartment user={currentUser} onSuccess={() => setCurrentScreen('listagem')} />;
       default:
-        return <Dashboard user={currentUser} />;
+        return (
+          <div>
+            <Dashboard user={currentUser} />
+            <div className="mt-4">
+              <MyChart />
+            </div>
+          </div>
+        );
     }
   };
 
