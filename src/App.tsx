@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User } from './lib/types';
+import { User } from '@/lib/types';
 import { LoginScreen } from './components/LoginScreen';
 import { MainLayout, Screen } from './components/MainLayout';
 import { Dashboard } from './components/screens/Dashboard';
@@ -12,7 +12,7 @@ import { ApproveQuotes } from './components/screens/ApproveQuotes';
 import { PurchasesDepartment } from './components/screens/PurchasesDepartment';
 import { FinanceDepartment } from './components/screens/FinanceDepartment';
 import { Toaster } from './components/ui/sonner';
-import { mockOrders } from './lib/mockData';
+import { mockOrders } from '@/lib/mockData';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);

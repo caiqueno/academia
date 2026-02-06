@@ -18,8 +18,8 @@ export const mockUsers: User[] = [
   },
   {
     id: '3',
-    name: 'Roberto Mendes',
-    email: 'roberto.mendes@ultraacademia.com',
+    name: 'Franklin Lima',
+    email: 'franklin.lima@ultraacademia.com',
     role: 'diretor',
   },
   {
@@ -173,7 +173,7 @@ export const mockOrders: Order[] = [
         id: 'hist-7',
         data: '2026-02-04T15:30:00',
         acao: 'Aprovado pelo Gerente',
-        usuario: 'Patricia Rocha',
+        usuario: 'Patricia Ramos',
         detalhes: 'Valor acima de R$ 5.000 requer aprovação do Diretor',
       },
     ],
